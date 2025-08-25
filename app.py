@@ -1,41 +1,22 @@
 # app.py
-
+# test_app.py
 import streamlit as st
-import pandas as pd
+import matplotlib.pyplot as plt
 import io
-from nifty50_data import fetch_nifty50_data
-from plot_utils import plot_dark_mode
 
-# Streamlit page setup
-st.set_page_config(layout="wide", page_title="Nifty 50 Financial Dashboard")
-st.title("📊 Nifty 50 Stock Dashboard")
-st.markdown("Visualizing Book Value, Current Price, and P/B Ratios for Nifty 50 companies")
-
-# Load the data
-with st.spinner("📡 Fetching Nifty 50 data..."):
-    df = fetch_nifty50_data()
-    st.success("✅ Data loaded successfully!")
-
-# Display data
-st.subheader("📈 Financial Data")
-st.dataframe(df, use_container_width=True)
-
-# Plot the chart
-st.subheader("📉 Financial Chart")
-fig = plot_dark_mode(df)
-st.pyplot(fig)
-
-# Download button for chart
+# Create a simple figure
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [4, 5, 6])
 buf = io.BytesIO()
-fig.savefig(buf, format="png", bbox_inches='tight', facecolor=fig.get_facecolor())
+fig.savefig(buf, format="png")
 buf.seek(0)
 
+st.pyplot(fig)
+
+# Download button
 st.download_button(
-    label="📥 Download Chart as PNG",
+    label="📥 Download Test Chart",
     data=buf,
-    file_name="nifty50chart.png",
+    file_name="test_chart.png",
     mime="image/png"
 )
-
-# Footer
-st.caption("Data Source: yfinance | Built with ❤️ using Streamlit and Matplotlib")
