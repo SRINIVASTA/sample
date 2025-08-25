@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import io
@@ -16,7 +14,7 @@ with st.spinner("📡 Fetching Nifty 50 data..."):
     df = fetch_nifty50_data()
     st.success("✅ Data loaded successfully!")
 
-# Display data
+# Display data table
 st.subheader("📈 Financial Data")
 st.dataframe(df, use_container_width=True)
 
@@ -25,11 +23,12 @@ st.subheader("📉 Financial Chart")
 fig = plot_dark_mode(df)
 st.pyplot(fig)
 
-# Download button for chart
+# Prepare image buffer for download button
 buf = io.BytesIO()
 fig.savefig(buf, format="png", bbox_inches='tight', facecolor=fig.get_facecolor())
 buf.seek(0)
 
+# Download button right after the plot
 st.download_button(
     label="📥 Download Chart as PNG",
     data=buf,
@@ -37,5 +36,5 @@ st.download_button(
     mime="image/png"
 )
 
-# Footer
+# Footer caption
 st.caption("Data Source: yfinance | Built with ❤️ using Streamlit and Matplotlib")
